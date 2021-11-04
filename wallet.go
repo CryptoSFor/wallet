@@ -29,3 +29,21 @@ func (w *Wallet) Deposit(b Bitcoin) error {
 
 	return nil
 }
+
+// Withdraw allows withdrawing bitcoin from the wallet
+func (w *Wallet) Withdraw(b Bitcoin) error {
+	w.mutex.Lock()
+	defer w.mutex.Unlock()
+
+	if math.Signbit(float64(b)) {
+		return errors.New("negative input")
+	}
+
+	if w.balance < b {
+		return errors.New("insufficient funds in the wallet")
+	}
+
+	w.balance -= b
+
+	return nil
+}
