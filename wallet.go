@@ -47,3 +47,11 @@ func (w *Wallet) Withdraw(b Bitcoin) error {
 
 	return nil
 }
+
+// GetBalance allows getting balance of the wallet
+func (w *Wallet) GetBalance() Bitcoin {
+	w.mutex.Lock()
+	defer w.mutex.Unlock()
+
+	return w.balance
+}
