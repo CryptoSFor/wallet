@@ -3,7 +3,6 @@ package wallet
 
 import (
 	"errors"
-	"math"
 	"sync"
 )
 
@@ -21,7 +20,7 @@ func (w *Wallet) Deposit(b Bitcoin) error {
 	w.mutex.Lock()
 	defer w.mutex.Unlock()
 
-	if math.Signbit(float64(b)) {
+	if float64(b) < 0 {
 		return errors.New("negative input")
 	}
 
