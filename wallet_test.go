@@ -54,37 +54,35 @@ func TestWallet_Withdraw(t *testing.T) {
 		name           string
 		w              *Wallet
 		withdrawAmount Bitcoin
-		wantErr        bool
+		want           Bitcoin
+		wantErr        error
 	}{
 		{
-			name:           "1",
-			w:              &Wallet{balance: 1},
-			withdrawAmount: 1,
-			wantErr:        false,
+			name:           "Withdrawing positive value from positive balance",
+			w:              &Wallet{balance: 0.1},
+			withdrawAmount: 0.05,
+			want:           0.05,
+			wantErr:        nil,
 		},
 		{
-			name:           "2",
-			w:              &Wallet{balance: 1},
-			withdrawAmount: -1,
-			wantErr:        true,
+			name:           "Withdrawing negative value",
+			w:              &Wallet{balance: 0.01},
+			withdrawAmount: -0.0001,
+			want:           0.01,
+			wantErr:        NegativeInputError,
 		},
 		{
-			name:           "3",
-			w:              &Wallet{balance: -1},
-			withdrawAmount: 1,
-			wantErr:        true,
-		},
-		{
-			name:           "4",
-			w:              &Wallet{balance: 1},
-			withdrawAmount: 2,
-			wantErr:        true,
+			name:           "Withdrawing from negative balance",
+			w:              &Wallet{balance: -0.001},
+			withdrawAmount: 0.1,
+			want:           -0.001,
+			wantErr:        InsufficientFundsError,
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if err := tt.w.Withdraw(tt.withdrawAmount); (err != nil) != tt.wantErr {
-				t.Errorf("Wallet.Withdraw() error = %v, wantErr %v", err, tt.wantErr)
+			if err := tt.w.Withdraw(tt.withdrawAmount); err != tt.wantErr || tt.w.balance != tt.want {
+				t.Errorf("Wallet.Withdraw() error = %v, wantErr = %v, want = %v, got = %v", err, tt.wantErr, tt.w.balance, tt.want)
 			}
 		})
 	}
