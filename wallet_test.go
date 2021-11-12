@@ -49,43 +49,41 @@ func TestWallet_GetBalance(t *testing.T) {
 }
 
 func TestWallet_Withdraw(t *testing.T) {
-	type args struct {
-		b Bitcoin
-	}
+	type withrawAMount Bitcoin
 	tests := []struct {
-		name    string
-		w       *Wallet
-		args    args
-		wantErr bool
+		name           string
+		w              *Wallet
+		withdrawAmount Bitcoin
+		wantErr        bool
 	}{
 		{
-			name:    "1",
-			w:       &Wallet{balance: 1},
-			args:    args{b: 1},
-			wantErr: false,
+			name:           "1",
+			w:              &Wallet{balance: 1},
+			withdrawAmount: 1,
+			wantErr:        false,
 		},
 		{
-			name:    "2",
-			w:       &Wallet{balance: 1},
-			args:    args{b: -1},
-			wantErr: true,
+			name:           "2",
+			w:              &Wallet{balance: 1},
+			withdrawAmount: -1,
+			wantErr:        true,
 		},
 		{
-			name:    "3",
-			w:       &Wallet{balance: -1},
-			args:    args{b: 1},
-			wantErr: true,
+			name:           "3",
+			w:              &Wallet{balance: -1},
+			withdrawAmount: 1,
+			wantErr:        true,
 		},
 		{
-			name:    "4",
-			w:       &Wallet{balance: 1},
-			args:    args{b: 2},
-			wantErr: true,
+			name:           "4",
+			w:              &Wallet{balance: 1},
+			withdrawAmount: 2,
+			wantErr:        true,
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if err := tt.w.Withdraw(tt.args.b); (err != nil) != tt.wantErr {
+			if err := tt.w.Withdraw(tt.withdrawAmount); (err != nil) != tt.wantErr {
 				t.Errorf("Wallet.Withdraw() error = %v, wantErr %v", err, tt.wantErr)
 			}
 		})
