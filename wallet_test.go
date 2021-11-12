@@ -49,7 +49,6 @@ func TestWallet_GetBalance(t *testing.T) {
 }
 
 func TestWallet_Withdraw(t *testing.T) {
-	type withrawAMount Bitcoin
 	tests := []struct {
 		name           string
 		w              *Wallet
