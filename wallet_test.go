@@ -28,6 +28,16 @@ func TestWallet_GetBalance(t *testing.T) {
 			w:    &Wallet{balance: -1},
 			want: -1,
 		},
+		{
+			name: "small float balance",
+			w:    &Wallet{balance: 0.00000001},
+			want: 0.00000001,
+		},
+		{
+			name: "huge float balance",
+			w:    &Wallet{balance: 10000000.00000001},
+			want: 10000000.00000001,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
