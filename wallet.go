@@ -15,13 +15,16 @@ type Wallet struct {
 	mutex   sync.Mutex
 }
 
+var NegativeInputError = errors.New("negative input")
+var InsufficientFundsError = errors.New("insufficient funds in the wallet")
+
 // Deposit allows depositing bitcoin to the  wallet
 func (w *Wallet) Deposit(b Bitcoin) error {
 	w.mutex.Lock()
 	defer w.mutex.Unlock()
 
 	if float64(b) < 0 {
-		return errors.New("negative input")
+		return NegativeInputError
 	}
 
 	w.balance += b
@@ -35,11 +38,11 @@ func (w *Wallet) Withdraw(b Bitcoin) error {
 	defer w.mutex.Unlock()
 
 	if float64(b) < 0 {
-		return errors.New("negative input")
+		return NegativeInputError
 	}
 
 	if w.balance < b {
-		return errors.New("insufficient funds in the wallet")
+		return InsufficientFundsError
 	}
 
 	w.balance -= b
