@@ -64,6 +64,13 @@ func TestWallet_Withdraw(t *testing.T) {
 			wantErr:        nil,
 		},
 		{
+			name:           "Withdrawing from positive balance, but insufficient funds",
+			w:              &Wallet{balance: 0.5},
+			withdrawAmount: 0.75,
+			want:           0.5,
+			wantErr:        InsufficientFundsError,
+		},
+		{
 			name:           "Withdrawing negative value",
 			w:              &Wallet{balance: 0.01},
 			withdrawAmount: -0.0001,
