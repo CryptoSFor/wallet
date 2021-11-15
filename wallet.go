@@ -20,13 +20,12 @@ var InsufficientFundsError = errors.New("insufficient funds in the wallet")
 
 // Deposit allows depositing bitcoin to the  wallet
 func (w *Wallet) Deposit(b Bitcoin) error {
-	defer w.mutex.Unlock()
-
 	if float64(b) < 0 {
 		return NegativeInputError
 	}
 
 	w.mutex.Lock()
+	defer w.mutex.Unlock()
 
 	w.balance += b
 
@@ -35,13 +34,12 @@ func (w *Wallet) Deposit(b Bitcoin) error {
 
 // Withdraw allows withdrawing bitcoin from the wallet
 func (w *Wallet) Withdraw(b Bitcoin) error {
-	defer w.mutex.Unlock()
-
 	if float64(b) < 0 {
 		return NegativeInputError
 	}
 
 	w.mutex.Lock()
+	defer w.mutex.Unlock()
 
 	if w.balance < b {
 		return InsufficientFundsError
