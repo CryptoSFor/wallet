@@ -3,7 +3,7 @@ package wallet_test
 import (
 	"fmt"
 
-	"github.com/CryptoSFor/wallet/wallet"
+	"github.com/CryptoSFor/wallet"
 )
 
 func ExampleWallet() {
