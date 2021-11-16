@@ -7,7 +7,7 @@ import (
 	"testing"
 )
 
-func TestWallet_GetBalance(t *testing.T) {
+func TestWallet_Balance(t *testing.T) {
 	tests := []struct {
 		name string
 		w    *Wallet
@@ -41,7 +41,7 @@ func TestWallet_GetBalance(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := tt.w.GetBalance(); !reflect.DeepEqual(got, tt.want) {
+			if got := tt.w.Balance(); !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("Wallet.GetBalance() = %v, want %v", got, tt.want)
 			}
 		})
