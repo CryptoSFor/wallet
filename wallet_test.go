@@ -141,9 +141,9 @@ func TestWallet_ConcurrentUse(t *testing.T) {
 		var wg sync.WaitGroup
 
 		numOfDeposits := 100
-		numOfWithdraws := 90
+		numOfWithdrawals := 90
 
-		wg.Add(numOfDeposits + numOfWithdraws)
+		wg.Add(numOfDeposits + numOfWithdrawals)
 
 		for i := 0; i < numOfDeposits; i++ {
 			go func(wg *sync.WaitGroup) {
@@ -152,7 +152,7 @@ func TestWallet_ConcurrentUse(t *testing.T) {
 			}(&wg)
 		}
 
-		for i := 0; i < numOfWithdraws; i++ {
+		for i := 0; i < numOfWithdrawals; i++ {
 			go func(wg *sync.WaitGroup) {
 				w.Withdraw(2)
 				defer wg.Done()
