@@ -136,27 +136,33 @@ func TestWallet_Deposit(t *testing.T) {
 
 func TestWallet_ConcurrentUse(t *testing.T) {
 	t.Run("ConcurrentUse", func(t *testing.T) {
-		w := Wallet{}
+		w := Wallet{balance: 1000}
+
 		var wg sync.WaitGroup
-		numOfGourutinies := 200
-		wg.Add(numOfGourutinies)
-		for i := 0; i < numOfGourutinies; i++ {
+
+		numOfDeposits := 100
+		numOfWithdraws := 90
+
+		wg.Add(numOfDeposits + numOfWithdraws)
+
+		for i := 0; i < numOfDeposits; i++ {
 			go func(wg *sync.WaitGroup) {
 				w.Deposit(1)
 				defer wg.Done()
 			}(&wg)
 		}
-		wg.Wait()
-		numOfGourutinies = 90
-		wg.Add(numOfGourutinies)
-		for i := 0; i < numOfGourutinies; i++ {
+
+		for i := 0; i < numOfWithdraws; i++ {
 			go func(wg *sync.WaitGroup) {
 				w.Withdraw(2)
 				defer wg.Done()
 			}(&wg)
 		}
+
 		wg.Wait()
-		var wantBalance Bitcoin = 20
+
+		var wantBalance Bitcoin = 920
+
 		if w.balance != wantBalance {
 			t.Errorf(" want = %v, got = %v", wantBalance, w.balance)
 		}
